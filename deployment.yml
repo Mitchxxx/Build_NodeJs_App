@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejswebapp-deployment
+  labels:
+    app: nodejswebapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nodejswebapp
+  template:
+    metadata:
+      labels:
+        app: nodejswebapp
+    spec:
+      containers:
+      - name: nodejswebapp-container
+        image: mitchacr.azurecr.io/nodejswebapp:v1
+        ports:
+        - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejswebapp-service
+  labels:
+    app: nodejswebapp
+spec:
+  selector:
+    app: nodejswebapp
+  ports:
+  - port: 3000
+    targetPort: 3000
+  type: LoadBalancer
