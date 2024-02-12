@@ -1,26 +1,26 @@
 resource "azurerm_resource_group" "arg" {
-  name = var.resource_group_name
+  name     = var.resource_group_name
   location = var.resource_group_location
 }
 
 resource "azurerm_container_registry" "acr" {
-  name = "mitchacr"
+  name                = "mitchacr"
   resource_group_name = azurerm_resource_group.arg.name
-  location = azurerm_resource_group.arg.location
-  sku = "Standard"
-  admin_enabled = false
+  location            = azurerm_resource_group.arg.location
+  sku                 = "Standard"
+  admin_enabled       = false
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name = "mitch-cluster"
-  location = azurerm_resource_group.arg.location
+  name                = "mitch-cluster"
+  location            = azurerm_resource_group.arg.location
   resource_group_name = azurerm_resource_group.arg.name
-  dns_prefix = "karoaks"
+  dns_prefix          = "karoaks"
 
   default_node_pool {
-    name = "default"
+    name       = "default"
     node_count = 3
-    vm_size = "Standard_A2_v2"
+    vm_size    = "Standard_A2_v2"
   }
 
   identity {
@@ -33,8 +33,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 resource "azurerm_role_assignment" "arm_role" {
-  principal_id = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
-  role_definition_name = "AcrPull"
-  scope = azurerm_container_registry.acr.id
+  principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+  role_definition_name             = "AcrPull"
+  scope                            = azurerm_container_registry.acr.id
   skip_service_principal_aad_check = true
 }
