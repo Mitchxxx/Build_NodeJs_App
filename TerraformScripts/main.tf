@@ -1,7 +1,9 @@
+# Create a resource group
 resource "azurerm_resource_group" "arg" {
   name     = var.resource_group_name
   location = var.resource_group_location
 }
+# Create Azure Container Registry
 
 resource "azurerm_container_registry" "acr" {
   name                = "mitchacr"
@@ -11,6 +13,7 @@ resource "azurerm_container_registry" "acr" {
   admin_enabled       = false
 }
 
+# Create AKS Cluster and Grant ACR Pull acess
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = "mitch-cluster"
   location            = azurerm_resource_group.arg.location
@@ -31,7 +34,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     Environment = "Production"
   }
 }
-
+# Create acr pull access for AKS Cluster
 resource "azurerm_role_assignment" "arm_role" {
   principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
   role_definition_name             = "AcrPull"
