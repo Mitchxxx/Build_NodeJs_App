@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     //dockerImage = docker.build registryUrl
-                    def dockerImage = docker.build("{$ACR_NAME}.azurecr.io/${IMAGE_NAME}:${IMAGE_TAG}", '.')
+                    def dockerImage = docker.build("${ACR_NAME}.azurecr.io/${IMAGE_NAME}:${IMAGE_TAG}", '.')
                 }
             }
         }
