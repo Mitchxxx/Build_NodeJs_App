@@ -22,7 +22,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
   default_node_pool {
     name       = "default"
-    node_count = 3
+    node_count = 2
     vm_size    = "Standard_A2_v2"
   }
 

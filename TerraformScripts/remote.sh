@@ -1,7 +1,7 @@
 #!/bin/bash
 
 RESOURCE_GROUP_NAME=remote
-STORAGE_ACCOUNT_NAME=mitchxxx$RANDOM
+STORAGE_ACCOUNT_NAME=mitchyxxx$RANDOM
 CONTAINER_NAME=containertfstate
 
 # Create a Resource group
