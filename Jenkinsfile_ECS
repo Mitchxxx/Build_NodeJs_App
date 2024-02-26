@@ -37,9 +37,9 @@ pipeline {
                 workDir('ECS_Terraform_Script'){
       //             sh "terraform ${action} --auto-approve"
                     script {
-                        if (params.action === 'apply'){
+                        if (params.action == 'apply'){
                             sh "terraform apply --auto-approve"
-                        } else if (params.action === 'destroy'){
+                        } else if (params.action == 'destroy'){
                             sh "terraform apply --auto-approve"
                         }
                     }
