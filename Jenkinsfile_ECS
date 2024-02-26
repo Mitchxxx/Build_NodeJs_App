@@ -20,21 +20,21 @@ pipeline {
         }
         stage ('terraform init') {
             steps {
-                workDir('ECS_Terraform_Script'){
+                dir('ECS_Terraform_Script'){
                    sh "terraform init"
                 }
             }
         }
         stage ('terraform plan') {
             steps {
-                workDir('ECS_Terraform_Script'){
+                dir('ECS_Terraform_Script'){
                    sh "terraform plan"
                 }
             }
         }
         stage ('terraform action') {
             steps {
-                workDir('ECS_Terraform_Script'){
+                dir('ECS_Terraform_Script'){
       //             sh "terraform ${action} --auto-approve"
                     script {
                         if (params.action == 'apply'){
