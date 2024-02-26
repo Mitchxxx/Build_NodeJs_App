@@ -1,12 +1,12 @@
-pipeline {
-    agent any
-    parameters {
+parameters {
         choice(
         choices: ['apply', 'destroy'],
         description: 'Please enter your option or action',
         name: 'action'
         )
     }
+pipeline {
+    agent any
     environment {
         AWS_ACCESS_KEY_ID = credentials('mitchel_AWS_ACCESS_KEY_ID')
          AWS_SECRET_ACCESS_KEY_ID = credentials('mitchel_AWS_SECRET_ACCESS_KEY_ID')
