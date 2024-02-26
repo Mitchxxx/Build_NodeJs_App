@@ -1,8 +1,8 @@
 pipeline {
     agent any
     parameters {
-        choices: ['apply', 'destroy'], 
-        description: 'Please enter your option or action', 
+        choices: ['apply', 'destroy']
+        description: 'Please enter your option or action'
         name: 'action'
     }
     environment {
