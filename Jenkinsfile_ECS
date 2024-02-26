@@ -35,12 +35,13 @@ pipeline {
         stage ('terraform action') {
             steps {
                 dir('ECS_Terraform_Script'){
-      //             sh "terraform ${action} --auto-approve"
                     script {
                         if (params.action == 'apply'){
                             sh "terraform apply --auto-approve"
                         } else if (params.action == 'destroy'){
-                            sh "terraform apply --auto-approve"
+                            sh "terraform destroy --auto-approve"
+                        } else {
+                            error('Invalid Terrform action selected')
                         }
                     }
                 }
