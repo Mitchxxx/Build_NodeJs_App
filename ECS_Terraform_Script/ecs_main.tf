@@ -71,6 +71,6 @@ EOF
 
 resource "aws_iam_policy_attachment" "ecs_task_execution_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-  roles       = aws_iam_role.ecs_task_execution_role.name
+  roles       = [aws_iam_role.ecs_task_execution_role.name]
   name = "ecs_task_execution_policy_attachment"
 }

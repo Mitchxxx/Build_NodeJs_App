@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+    parameters {
+        choice choices: ['apply', 'destroy'], description: 'Please enter your option or action', name: 'action'
+    }
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('mitchel_AWS_ACCESS_KEY_ID')
+         AWS_SECRET_ACCESS_KEY_ID = credentials('mitchel_AWS_SECRET_ACCESS_KEY_ID')
+        AWS_DEFAULT_REGION = 'eu-west-1'
+    }
+    stages {
+        stage ('Checkout'){
+            steps {
+                git branch: 'main', url: 'https://github.com/Mitchxxx/Build_NodeJs_App.git'
+            }
+        }
+        stage ('terraform init') {
+            steps {
+                workDir('ECS_Terraform_Script'){
+                   sh "terraform init"
+                }
+            }
+        }
+        stage ('terraform plan') {
+            steps {
+                workDir('ECS_Terraform_Script'){
+                   sh "terraform plan"
+                }
+            }
+        }
+        stage ('terraform action') {
+            steps {
+                workDir('ECS_Terraform_Script'){
+                   sh "terraform ${action} --auto-approve"
+                }
+            }
+        }
+    }
+}
