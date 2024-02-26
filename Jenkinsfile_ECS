@@ -1,7 +1,9 @@
 pipeline {
     agent any
     parameters {
-        choice choices: ['apply', 'destroy'], description: 'Please enter your option or action', name: 'action'
+        choices: ['apply', 'destroy'], 
+        description: 'Please enter your option or action', 
+        name: 'action'
     }
     environment {
         AWS_ACCESS_KEY_ID = credentials('mitchel_AWS_ACCESS_KEY_ID')
@@ -31,7 +33,14 @@ pipeline {
         stage ('terraform action') {
             steps {
                 workDir('ECS_Terraform_Script'){
-                   sh "terraform ${action} --auto-approve"
+      //             sh "terraform ${action} --auto-approve"
+                    script {
+                        if (params.action === 'apply'){
+                            sh "terraform apply --auto-approve"
+                        } else if (params.action === 'destroy'){
+                            sh "terraform apply --auto-approve"
+                        }
+                    }
                 }
             }
         }
