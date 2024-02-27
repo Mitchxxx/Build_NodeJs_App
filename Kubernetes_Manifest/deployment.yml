@@ -18,6 +18,7 @@ spec:
       - name: nodejswebapp-container
         image: mitchacr.azurecr.io/nodejswebapp:v1.0.0
         ports:
+        - containerPort: 3000
         
 
 ---
