@@ -1,0 +1,34 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing app dependencies...
+      - curl -LO https://dl.k8s.io/release/v1.27.2/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl
+      - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+      - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+      - source ~/.bashrc
+      - echo 'Check kubectl version'
+      - kubectl version --short --client
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 748527796092.dkr.ecr.eu-west-1.amazonaws.com
+      - IMAGE_REPO_NAME=748527796092.dkr.ecr.eu-west-1.amazonaws.com/nodejswebapp
+      - IMAGE_TAG=latest
+      - aws eks --region eu-west-1 update-kubeconfig --name k8s-mitchxxx
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $IMAGE_REPO_NAME:$IMAGE_TAG
+      - echo Update deployment.yml file
+      - sed -i "s|image: .*|image: $IMAGE_REPO_NAME:$IMAGE_TAG|g" Kubernetes_Manifest/deployment.yml
+      - echo Push the latest image to cluster
+      - kubectl apply -f Kubernetes_Manifest/deployment.yml
