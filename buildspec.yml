@@ -28,7 +28,5 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $IMAGE_REPO_NAME:$IMAGE_TAG
-      - echo Update deployment.yml file
-      - sed -i "s|image: .*|image: $IMAGE_REPO_NAME:$IMAGE_TAG|g" Kubernetes_Manifest/deployment.yml
       - echo Push the latest image to cluster
       - kubectl apply -f Kubernetes_Manifest/deployment.yml
